@@ -1,95 +1,131 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+import Link from 'next/link'
 
-export default function Home() {
+// importing components
+import CallToActionButton from './components/Buttons/CallToActionButton/CallToActionButton'
+import Category from './components/Category/Category'
+import ItemsList from './components/ItemsList/ItemsList'
+import Pagination from './components/Pagination/Pagination'
+import Search from './components/Search/Search'
+import Wrapper from './components/Wrapper/Wrapper'
+
+import './page.module.scss'
+
+export default function Home (): JSX.Element {
+  const categories = [
+    {
+      id: 1,
+      name: 'Imobiliare'
+    }
+  ]
+
+  const subcategories = [
+    {
+      id: 1,
+      name: 'Apartamente',
+      parent_id: 1
+    },
+    {
+      id: 2,
+      name: 'Apartamente',
+      parent_id: 1
+    }
+  ]
+
+  const items = [
+    {
+      id: 1,
+      url: '/item/93',
+      title: 'Apartament cu trei odăi',
+      subcategory: 'Apartamente'
+    }
+  ]
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
+  // API host config
+  // import { apiHost } from '../config'
+
+  // class IndexPage extends Component {
+  // state = {
+  //   categories: [],
+  //   subcategories: [],
+  //   items: [],
+  //   page: null,
+  //   totalItems: null
+  // }
+
+  // fetchCategories () {
+  //   window
+  //     .fetch(`${apiHost}/categories.php`)
+  //     .then(response => response.json())
+  //     .then(categories => this.setState({ categories }))
+  //     .catch(err => console.error(err))
+  // }
+
+  // fetchSubcategories () {
+  //   window
+  //     .fetch(`${apiHost}/subcategories.php`)
+  //     .then(response => response.json())
+  //     .then(subcategories => this.setState({ subcategories }))
+  //     .catch(err => console.error(err))
+  // }
+
+  // fetchItems () {
+  //   const pageNumber = this.props.match.params.pageNumber || 1
+
+  //   window
+  //     .fetch(`${apiHost}/index.php?page=${pageNumber}`)
+  //     .then(response => response.json())
+  //     .then(data => {
+  //       this.setState({
+  //         items: data.items,
+  //         page: data.page,
+  //         totalItems: data.total
+  //       })
+  //     })
+  //     .catch(err => console.error(err))
+  // }
+
+  // componentDidMount () {
+  //   this.fetchCategories()
+  //   this.fetchSubcategories()
+  //   this.fetchItems()
+  // }
+
+  // componentDidUpdate (prevProps) {
+  //   if (prevProps.location.key !== this.props.location.key) {
+  //     this.fetchItems()
+  //   }
+  // }
+    <Wrapper>
+      <Search />
+
+      <div className='categories'>
+        {categories && categories.map(category =>
+          <Category
+            key={category.id.toString()}
+            id={category.id}
+            subcategories={subcategories}
+            name={category.name}
+          />
+        )}
       </div>
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
+      <ItemsList items={items} />
+
+      {/* <Pagination
+        pageNumber={page}
+        totalItems={totalItems}
+      /> */}
+
+      <Link
+        className='publish-item-button-link'
+        href='/item/add'
+      >
+        <CallToActionButton
+          id='call-to-action'
+          title='Post an ad'
         />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore the Next.js 13 playground.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+      </Link>
+    </Wrapper>
   )
 }
