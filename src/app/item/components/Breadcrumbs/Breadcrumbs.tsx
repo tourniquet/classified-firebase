@@ -28,9 +28,9 @@ const RootDiv = styled.div`
 
 interface BreadcrumbsParams {
   category: string
-  subcategory: number
+  subcategory: string
   title: string
-};
+}
 
 export default function Breadcrumbs ({ category, subcategory, title }: BreadcrumbsParams): JSX.Element {
   return (

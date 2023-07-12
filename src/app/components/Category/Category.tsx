@@ -89,7 +89,7 @@ export default function Category ({ id, subcategories, name }): JSX.Element {
           .map(subcategory => (
             <li
               className='subcategory-list-item'
-              key={subcategory.id.toString()}
+              key={subcategory.id}
             >
               <a
                 className='subcategory-link'

@@ -6,7 +6,7 @@ import styled from 'styled-components'
 // components
 import Image from '../Image/Image'
 import RoundedButton from '../Buttons/RoundedButton/RoundedButton'
-import SidebarToggle from '../Buttons/SidebarToggle'
+import SidebarToggle from '../Buttons/SidebarToggle/SidebarToggle'
 
 // utils
 // import * as api from '../../utils/cookieUtils'
@@ -283,7 +283,7 @@ export default function Header (): JSX.Element {
           </div>
         }
         <li>
-          <Link href='/item/add'>
+          <Link href='/item/new'>
             <RoundedButton
               title='Post an ad'
               style={{ margin: '5px auto 0' }}

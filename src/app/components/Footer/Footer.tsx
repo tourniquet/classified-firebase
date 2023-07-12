@@ -101,6 +101,7 @@ export default function Footer (): JSX.Element {
             className='link'
             href='https://github.com/tourniquet/minClass'
             target='_blank'
+            rel='noreferrer'
           >
             minClass
           </a>
