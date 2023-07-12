@@ -1,3 +1,7 @@
+'use client'
+
+import { collection, getDocs } from 'firebase/firestore'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 
 // importing components
@@ -8,28 +12,27 @@ import Pagination from './components/Pagination/Pagination'
 import Search from './components/Search/Search'
 import Wrapper from './components/Wrapper/Wrapper'
 
-import './page.module.scss'
+// API host config
+import { db } from '../../firebase-config'
+
+import styles from './page.module.scss'
 
 export default function Home (): JSX.Element {
-  const categories = [
-    {
-      id: 1,
-      name: 'Imobiliare'
-    }
-  ]
+  const [categories, setCategories] = useState([])
+  const categoriesCollectionRef = collection(db, 'categories')
 
-  const subcategories = [
-    {
-      id: 1,
-      name: 'Apartamente',
-      parent_id: 1
-    },
-    {
-      id: 2,
-      name: 'Apartamente',
-      parent_id: 1
-    }
-  ]
+  const getCategories = async () => {
+    const data = await getDocs(categoriesCollectionRef)
+    setCategories(data.docs.map((category) => ({ ...category.data(), id: category.id })))
+  }
+
+  const [subcategories, setSubcategories] = useState([])
+  const subcategoriesCollectionRef = collection(db, 'subcategories')
+
+  const getSubcategories = async () => {
+    const data = await getDocs(subcategoriesCollectionRef)
+    setSubcategories(data.docs.map((subcategory) => ({ ...subcategory.data(), id: subcategory.id })))
+  }
 
   const items = [
     {
@@ -40,9 +43,10 @@ export default function Home (): JSX.Element {
     }
   ]
 
-  return (
-  // API host config
-  // import { apiHost } from '../config'
+  useEffect(() => {
+    getCategories()
+    getSubcategories()
+  }, [])
 
   // class IndexPage extends Component {
   // state = {
@@ -51,22 +55,6 @@ export default function Home (): JSX.Element {
   //   items: [],
   //   page: null,
   //   totalItems: null
-  // }
-
-  // fetchCategories () {
-  //   window
-  //     .fetch(`${apiHost}/categories.php`)
-  //     .then(response => response.json())
-  //     .then(categories => this.setState({ categories }))
-  //     .catch(err => console.error(err))
-  // }
-
-  // fetchSubcategories () {
-  //   window
-  //     .fetch(`${apiHost}/subcategories.php`)
-  //     .then(response => response.json())
-  //     .then(subcategories => this.setState({ subcategories }))
-  //     .catch(err => console.error(err))
   // }
 
   // fetchItems () {
@@ -85,24 +73,20 @@ export default function Home (): JSX.Element {
   //     .catch(err => console.error(err))
   // }
 
-  // componentDidMount () {
-  //   this.fetchCategories()
-  //   this.fetchSubcategories()
-  //   this.fetchItems()
-  // }
-
   // componentDidUpdate (prevProps) {
   //   if (prevProps.location.key !== this.props.location.key) {
   //     this.fetchItems()
   //   }
   // }
+
+  return (
     <Wrapper>
       <Search />
 
-      <div className='categories'>
-        {categories && categories.map(category =>
+      <div className={styles.categories}>
+        {categories.length > 0 && categories.map(category =>
           <Category
-            key={category.id.toString()}
+            key={category.id}
             id={category.id}
             subcategories={subcategories}
             name={category.name}
